@@ -1,8 +1,8 @@
 {
-  "name": "De Beste Game Van De Klas",
-  "short_name": "Game",
+  "name": "Tetris",
+  "short_name": "Tetris",
   "icons": [{
-    "src": "icon-512x512.png",
+    "src": "tetris.png",
       "sizes": "512x512",
       "type": "image/png"
     }],

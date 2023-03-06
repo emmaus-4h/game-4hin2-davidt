@@ -17,3 +17,17 @@ html, body {
    */ 
   margin: 0px;
 }
+
+/* titel */
+#game-title {
+  text-align: center;
+  text-decoration: underline;
+}
+
+
+.gametitel {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  width: 150px;
+}
