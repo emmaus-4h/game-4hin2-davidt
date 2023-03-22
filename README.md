@@ -18,3 +18,11 @@ https://emmauscollege.github.io/informatica/game/
 - icon <br>
         http://www.iconarchive.com/show/android-lollipop-icons-by-dtafalonso/Play-Games-icon.html
 - ...
+
+
+Stappenplan:
+1 - Zorg ervoor dat het logo in het script staat, met een loading screen
+2 - Zorg ervoor dat
+3 -
+4 - 
+5 - 

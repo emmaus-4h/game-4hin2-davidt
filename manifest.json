@@ -2,7 +2,7 @@
   "name": "Tetris",
   "short_name": "Tetris",
   "icons": [{
-    "src": "tetris.png",
+    "src": "afbeeldingen/tetris.png",
       "sizes": "512x512",
       "type": "image/png"
     }],
