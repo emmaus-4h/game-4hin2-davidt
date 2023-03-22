@@ -21,8 +21,8 @@ https://emmauscollege.github.io/informatica/game/
 
 
 Stappenplan:
-1 - Zorg ervoor dat het logo in het script staat, met een loading screen
-2 - Zorg ervoor dat
-3 -
-4 - 
-5 - 
+1 - Zorg ervoor dat het logo in het script staat, met een loading screen.
+2 - Zorg ervoor dat er een punten telling systeem is (scoreboard), en een GAME OVER screen.
+3 - Zorg ervoor dat TETRIS blokken hebt aangemaakt.
+4 - Zorg ervoor dat je met de pijltjes op je toetsenboord TETRIS blokken kan bewegen.
+5 - Zorg ervoor dat alles goed runned en fix mogelijke bugs.
