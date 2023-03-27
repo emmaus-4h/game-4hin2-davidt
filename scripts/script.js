@@ -22,6 +22,7 @@ var spelStatus = SPELEN;
 var spelerX = 600; // x-positie van speler
 var spelerY = 600; // y-positie van speler
 
+var img; //plaatje
 /* ********************************************* */
 /* functies die je gebruikt in je game           */
 /* ********************************************* */
@@ -55,6 +56,10 @@ var verwerkBotsing = function() {
  * Tekent spelscherm
  */
 var tekenAlles = function() {
+
+  //logo
+  image(img, 500, 0, 250);
+
   // achtergrond
 
   // vijand
@@ -83,6 +88,15 @@ var checkGameOver = function() {
 /* ********************************************* */
 /* setup() en draw() functies / hoofdprogramma   */
 /* ********************************************* */
+/**
+ * preload
+ * deze functie wordt één keer uitgevoerd voor setup
+ * de p5 library, zodra het spel geladen is in de browser
+ * we laden hier de plaatjes
+ */
+function preload() {
+  img = loadImage('afbeeldingen/tetris.png');
+}
 
 /**
  * setup
