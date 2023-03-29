@@ -5,7 +5,6 @@
    Begin met dit template voor je game opdracht,
    voeg er je eigen code aan toe.
  */
-
 /*
  * instellingen om foutcontrole van je code beter te maken 
  */
@@ -15,14 +14,36 @@
 /* ********************************************* */
 /* globale variabelen die je gebruikt in je game */
 /* ********************************************* */
+const HOME = 0
 const SPELEN = 1;
 const GAMEOVER = 2;
 var spelStatus = SPELEN;
+
+//punten
+var score = 0;
 
 var spelerX = 600; // x-positie van speler
 var spelerY = 600; // y-positie van speler
 
 var img; //plaatje
+
+var knopX = 
+var knopY = 
+var knopW = 
+var knopH = 
+
+
+//tetromino 
+const Tetromino = [  // 7 soorten Tetromino stenen
+    [[1, 1, 0, 0], [1, 1, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0]], // Vierkant tetromino
+    [[1, 1, 1, 1], [0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0]], // Rechte tetromino
+    [[1, 1, 0, 0], [0, 1, 1, 0], [0, 0, 0, 0], [0, 0, 0, 0]]  // Z-tetromino
+    [[0, 1, 1, 0], [1, 1, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0]], // S-tetromino
+    [[0, 0, 1, 0], [1, 1, 1, 0], [0, 0, 0, 0], [0, 0, 0, 0]], // L-tetromino
+    [[1, 0, 0, 0], [1, 1, 1, 0], [0, 0, 0, 0], [0, 0, 0, 0]], // J-tetromino
+    [[0, 1, 0, 0], [1, 1, 1, 0], [0, 0, 0, 0], [0, 0, 0, 0]], // T-tetromino
+];
+
 /* ********************************************* */
 /* functies die je gebruikt in je game           */
 /* ********************************************* */
@@ -74,8 +95,18 @@ var tekenAlles = function() {
 
   // punten en health
 
-};
+  // teken knop
+  
 
+};
+/**
+ * return true als het gameover is
+ * anders return false
+ */
+var checkPauze = function() {
+  // als pauze knop ingelikt dan return true
+  return false;
+};
 /**
  * return true als het gameover is
  * anders return false
@@ -117,12 +148,20 @@ function setup() {
  * uitgevoerd door de p5 library, nadat de setup functie klaar is
  */
 function draw() {
+    if (spelStatus === PAUZE) {
+      // doe niks, behalve checken of hij van pauze af moet met mouseIsPressed
+      // dubbelklikken vorkomen met
+      // https://youtu.be/Q1Cl_PqVHMQ?list=PLpTljPS--R5CgvkhsT9EODw2ng4Rkp1HC
+    } 
   if (spelStatus === SPELEN) {
     beweegAlles();
     verwerkBotsing();
     tekenAlles();
     if (checkGameOver()) {
       spelStatus = GAMEOVER;
+    }
+    if (checkPauze()) {
+      spelStatus = PAUZE;
     }
   }
   if (spelStatus === GAMEOVER) {
