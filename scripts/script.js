@@ -96,7 +96,10 @@ var tekenAlles = function() {
   // punten en health
 
   // teken knop
-  
+  fill("grey");
+  rect(knopX - )
+  fill("black");
+  ellipse(knopX, knopY, 10, 10);
 
 };
 /**
