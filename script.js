@@ -26,10 +26,10 @@ var score = 0;
 var img; //plaatje
 
 // start + pauze knop
-var knopX = 
-var knopY = 
-var knopW = 
-var knopH = 
+var knopX = 100;
+var knopY = 100;
+var knopW = 50;
+var knopH = 50;
 
 
 //tetromino 
@@ -76,27 +76,23 @@ var verwerkBotsing = function() {
  * Tekent spelscherm
  */
 var tekenAlles = function() {
-
+  // Kleur de achtergrond blauw, zodat je het kunt zien
+  background("#282f70")
+  
   //logo
   image(img, 500, 0, 250);
 
-  // achtergrond
-  background()
   // vijand
 
   // kogel
 
-  // speler
-  fill("white");
-  rect(spelerX - 25, spelerY - 25, 50, 50);
-  fill("black");
-  ellipse(spelerX, spelerY, 10, 10);
+  
 
   // punten en health
 
   // teken knop
   fill("grey");
-  rect(knopX - )
+  rect(knopX, knopY, knopW, knopH )
   fill("black");
   ellipse(knopX, knopY, 10, 10);
 
@@ -140,8 +136,7 @@ function setup() {
   // Maak een canvas (rechthoek) waarin je je speelveld kunt tekenen
   createCanvas(1280, 720);
 
-  // Kleur de achtergrond blauw, zodat je het kunt zien
-  background("#282f70")
+  
 }
 
 /**
