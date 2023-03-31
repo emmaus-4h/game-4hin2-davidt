@@ -17,16 +17,15 @@
 const HOME = 0
 const SPELEN = 1;
 const GAMEOVER = 2;
+const PAUZE = 3;
 var spelStatus = SPELEN;
 
 //punten
 var score = 0;
 
-var spelerX = 600; // x-positie van speler
-var spelerY = 600; // y-positie van speler
-
 var img; //plaatje
 
+// start + pauze knop
 var knopX = 
 var knopY = 
 var knopW = 
@@ -82,7 +81,7 @@ var tekenAlles = function() {
   image(img, 500, 0, 250);
 
   // achtergrond
-
+  background()
   // vijand
 
   // kogel
