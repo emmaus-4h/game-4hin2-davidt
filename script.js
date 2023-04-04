@@ -28,8 +28,8 @@ var img; //plaatje
 // start + pauze knop
 var knopX = 100;
 var knopY = 100;
-var knopW = 50;
-var knopH = 50;
+var knopW = 100;
+var knopH = 20;
 
 
 //tetromino 
@@ -92,10 +92,7 @@ var tekenAlles = function() {
 
   // teken knop
   fill("grey");
-  rect(knopX, knopY, knopW, knopH )
-  fill("black");
-  ellipse(knopX, knopY, 10, 10);
-
+  rect(knopX, knopY, knopW, knopH)
 };
 /**
  * return true als het gameover is
