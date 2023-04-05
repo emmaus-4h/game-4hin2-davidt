@@ -26,10 +26,10 @@ var score = 0;
 var img; //plaatje
 
 // start + pauze knop
-var knopX = 100;
+var knopX = 900;
 var knopY = 100;
-var knopW = 100;
-var knopH = 20;
+var knopW = 120;
+var knopH = 25;
 
 
 //tetromino 
@@ -80,19 +80,23 @@ var tekenAlles = function() {
   background("#282f70")
   
   //logo
-  image(img, 500, 0, 250);
+  image(img, 500, 0, 250, 200);
 
-  // vijand
-
-  // kogel
-
-  
-
-  // punten en health
-
+  // teken score
+  fill("#282f70");
+  rect(1020, 40, 210, 180);
+  textSize(40);
+  fill("#31589f");
+  text("Your Score",1030,90);
+  textSize(20);
+  var score=10;
+  text(String(score),1030,150);
   // teken knop
   fill("grey");
-  rect(knopX, knopY, knopW, knopH)
+  rect(knopX, knopY, knopW, knopH);
+  fill("#31589f");
+  text("Start / Pauze", 905, 120);
+  textSize(20);
 };
 /**
  * return true als het gameover is
