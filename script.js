@@ -26,8 +26,8 @@ var score = 0;
 var img; //plaatje
 
 // start + pauze knop
-var knopX = 900;
-var knopY = 100;
+var knopX = 1070;
+var knopY = 250;
 var knopW = 120;
 var knopH = 25;
 
@@ -86,16 +86,18 @@ var tekenAlles = function() {
   fill("#282f70");
   rect(1020, 40, 210, 180);
   textSize(40);
-  fill("#31589f");
-  text("Your Score",1030,90);
+  fill(133, 121, 107);
+  text("Your Score",1025,90);
   textSize(20);
+  fill(133, 121, 107);
   var score=10;
-  text(String(score),1030,150);
+  text(String(score),1110,150);
+  
   // teken knop
-  fill("grey");
+  fill("red");
   rect(knopX, knopY, knopW, knopH);
-  fill("#31589f");
-  text("Start / Pauze", 905, 120);
+  fill("white");
+  text("Start / Pauze", 1070, 270);
   textSize(20);
 };
 /**
