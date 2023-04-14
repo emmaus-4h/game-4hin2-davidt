@@ -87,17 +87,18 @@ var tekenAlles = function() {
   rect(1020, 40, 210, 180);
   textSize(40);
   fill(133, 121, 107);
-  text("Your Score",1025,90);
+  text("𝗬𝗼𝘂𝗿 𝗦𝗰𝗼𝗿𝗲",1025,90);
   textSize(20);
+  
   fill(133, 121, 107);
-  var score=10;
-  text(String(score),1110,150);
+  var score=0;
+  text(String(score),1120,150);
   
   // teken knop
   fill("red");
   rect(knopX, knopY, knopW, knopH);
   fill("white");
-  text("Start / Pauze", 1070, 270);
+  text("𝐒𝐭𝐚𝐫𝐭 / 𝐏𝐚𝐮𝐳𝐞", 1070, 270);
   textSize(20);
 };
 /**
