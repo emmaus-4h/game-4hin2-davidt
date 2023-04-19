@@ -30,6 +30,7 @@ var knopX = 1070;
 var knopY = 250;
 var knopW = 120;
 var knopH = 25;
+var mouseIsPressedLastTime = false;
 
 
 //tetromino 
@@ -51,25 +52,14 @@ const Tetromino = [  // 7 soorten Tetromino stenen
  * Updatet globale variabelen met posities van speler, vijanden en kogels
  */
 var beweegAlles = function() {
-  // speler
 
-  // vijand
-
-  // kogel
 };
 
 /**
  * Checkt botsingen
- * Verwijdert neergeschoten dingen
  * Updatet globale variabelen punten en health
  */
 var verwerkBotsing = function() {
-  // botsing speler tegen vijand
-
-  // botsing kogel tegen vijand
-
-  // update punten en health
-
 };
 
 /**
@@ -107,8 +97,18 @@ var tekenAlles = function() {
  */
 var checkPauze = function() {
   // als pauze knop ingelikt dan return true
+
+  if (mouseIsPressed  && !mouseIsPressedLastTime &&
+      mouseX>knopX && mouseX<knopX+knopW) {
+    console.log("pauze");
+      mouseIsPressedLastTime = mouseIsPressed;
+    return true;
+      } else {
+      mouseIsPressedLastTime = mouseIsPressed;
   return false;
+  }
 };
+
 /**
  * return true als het gameover is
  * anders return false
@@ -150,6 +150,9 @@ function setup() {
  */
 function draw() {
     if (spelStatus === PAUZE) {
+          if (checkPauze()) {
+      spelStatus = SPELEN;
+    }
       // doe niks, behalve checken of hij van pauze af moet met mouseIsPressed
       // dubbelklikken vorkomen met
       // https://youtu.be/Q1Cl_PqVHMQ?list=PLpTljPS--R5CgvkhsT9EODw2ng4Rkp1HC
