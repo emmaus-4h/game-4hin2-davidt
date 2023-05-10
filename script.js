@@ -171,7 +171,42 @@ function draw() {
   if (spelStatus === GAMEOVER) {
     // teken game-over scherm
 
+    
   }
 }
 
+/** Controls */
+function keyPressed() {
+  switch (keyCode) {
+      //rotate de blokken
+    case 69:
+      rotateBlok();
+      break;
+  }
+}
+
+// blokken naar beneden
+case 40:
+
+
+break;
+
+// blokken naar rechts
+case 39:
+
+break;
+
+// blokken naar links
+case 37:
+
+checkBotsing();
+break;
+
+// blokken vallen in 1x naar beneden 
+case 32:
+do {
+  positieBlok[0]++;
+  checkBotsing();
+} while(positieBlok [0] != 0)
+break;
 
