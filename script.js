@@ -23,6 +23,9 @@ var spelStatus = SPELEN;
 //punten
 var score = 0;
 
+var rVergoeding1;
+var rVergoeding2;
+
 var img; //plaatje
 
 // start + pauze knop
@@ -33,6 +36,14 @@ var knopH = 25;
 var mouseIsPressedLastTime = false;
 
 
+//deze arrays bevatten de positie van de blokken
+var Blok = Array.from(Array(4), ()   => new Array(4));    
+
+var positieBlok = new Array(6);
+
+// tetris bord
+var bord = Array.from(Array(20), ()   => new Array(10));  
+  
 //tetromino 
 const Tetromino = [  // 7 soorten Tetromino stenen
     [[1, 1, 0, 0], [1, 1, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0]], // Vierkant tetromino
@@ -49,7 +60,7 @@ const Tetromino = [  // 7 soorten Tetromino stenen
 /* ********************************************* */
 
 /**
- * Updatet globale variabelen met posities van speler, vijanden en kogels
+ * Update globale variabelen met posities van speler, vijanden en kogels
  */
 var beweegAlles = function() {
 
@@ -114,9 +125,6 @@ var checkPauze = function() {
  * anders return false
  */
 var checkGameOver = function() {
-  // check of HP 0 is , of tijd op is, of ...
-  return false;
-};
 
 /* ********************************************* */
 /* setup() en draw() functies / hoofdprogramma   */
@@ -140,6 +148,7 @@ function setup() {
   // Maak een canvas (rechthoek) waarin je je speelveld kunt tekenen
   createCanvas(1280, 720);
 
+  spelStatus = HOME;
   
 }
 
@@ -154,8 +163,6 @@ function draw() {
       spelStatus = SPELEN;
     }
       // doe niks, behalve checken of hij van pauze af moet met mouseIsPressed
-      // dubbelklikken vorkomen met
-      // https://youtu.be/Q1Cl_PqVHMQ?list=PLpTljPS--R5CgvkhsT9EODw2ng4Rkp1HC
     } 
   if (spelStatus === SPELEN) {
     beweegAlles();
@@ -169,11 +176,25 @@ function draw() {
     }
   }
   if (spelStatus === GAMEOVER) {
+
+
+    // dit gaat kijken of je hebt verloren
+    for(var i = 0; i < 4; i++){
+        if(bord[0 || 1][3 + i] === 1) {
+            spelStatus = GAMEOVER;
+        } 
+    }
+};
     // teken game-over scherm
 
     
   }
 }
+
+
+
+
+
 
 /** Controls */
 function keyPressed() {
@@ -187,19 +208,19 @@ function keyPressed() {
 
 // blokken naar beneden
 case 40:
-
-
+positieBlok[0]++;
+checkBotsing();
 break;
 
 // blokken naar rechts
 case 39:
-
+if (positieBlok[1] - )
 break;
 
 // blokken naar links
 case 37:
 
-checkBotsing();
+
 break;
 
 // blokken vallen in 1x naar beneden 
