@@ -186,8 +186,13 @@ function draw() {
     }
   };
   // teken game-over scherm
-
-
+  console.log("game over");
+  textSize(50);
+  fill("white");
+  text("game ovver", 100, 100);
+  if (keyIsDown(32)) {
+    spelStatus = SPELEN;
+  }
 }
 
 
