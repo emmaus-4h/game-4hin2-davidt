@@ -189,7 +189,7 @@ function draw() {
   console.log("game over");
   textSize(50);
   fill("white");
-  text("game ovver", 100, 100);
+  text("GAME OVER", 500, 400);
   if (keyIsDown(32)) {
     spelStatus = SPELEN;
   }
