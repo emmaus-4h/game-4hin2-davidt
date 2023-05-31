@@ -125,71 +125,71 @@ var checkPauze = function() {
  * anders return false
  */
 var checkGameOver = function() {
+}
+/* ********************************************* */
+/* setup() en draw() functies / hoofdprogramma   */
+/* ********************************************* */
+/**
+ * preload
+ * deze functie wordt één keer uitgevoerd voor setup
+ * de p5 library, zodra het spel geladen is in de browser
+ * we laden hier de plaatjes
+ */
+function preload() {
+  img = loadImage('afbeeldingen/tetris.png');
+}
 
-  /* ********************************************* */
-  /* setup() en draw() functies / hoofdprogramma   */
-  /* ********************************************* */
-  /**
-   * preload
-   * deze functie wordt één keer uitgevoerd voor setup
-   * de p5 library, zodra het spel geladen is in de browser
-   * we laden hier de plaatjes
-   */
-  function preload() {
-    img = loadImage('afbeeldingen/tetris.png');
-  }
+/**
+ * setup
+ * de code in deze functie wordt één keer uitgevoerd door
+ * de p5 library, zodra het spel geladen is in de browser
+ */
+function setup() {
+  // Maak een canvas (rechthoek) waarin je je speelveld kunt tekenen
+  createCanvas(1280, 720);
 
-  /**
-   * setup
-   * de code in deze functie wordt één keer uitgevoerd door
-   * de p5 library, zodra het spel geladen is in de browser
-   */
-  function setup() {
-    // Maak een canvas (rechthoek) waarin je je speelveld kunt tekenen
-    createCanvas(1280, 720);
+  spelStatus = HOME;
 
-    spelStatus = HOME;
+}
 
-  }
-
-  /**
-   * draw
-   * de code in deze functie wordt 50 keer per seconde
-   * uitgevoerd door de p5 library, nadat de setup functie klaar is
-   */
-  function draw() {
-    if (spelStatus === PAUZE) {
-      if (checkPauze()) {
-        spelStatus = SPELEN;
-      }
-      // doe niks, behalve checken of hij van pauze af moet met mouseIsPressed
+/**
+ * draw
+ * de code in deze functie wordt 50 keer per seconde
+ * uitgevoerd door de p5 library, nadat de setup functie klaar is
+ */
+function draw() {
+  if (spelStatus === PAUZE) {
+    if (checkPauze()) {
+      spelStatus = SPELEN;
     }
-    if (spelStatus === SPELEN) {
-      beweegAlles();
-      verwerkBotsing();
-      tekenAlles();
-      if (checkGameOver()) {
+    // doe niks, behalve checken of hij van pauze af moet met mouseIsPressed
+  }
+  if (spelStatus === SPELEN) {
+    beweegAlles();
+    verwerkBotsing();
+    tekenAlles();
+    if (checkGameOver()) {
+      spelStatus = GAMEOVER;
+    }
+    if (checkPauze()) {
+      spelStatus = PAUZE;
+    }
+  }
+  if (spelStatus === GAMEOVER) {
+
+
+    // dit gaat kijken of je hebt verloren
+    for (var i = 0; i < 4; i++) {
+      if (bord[0 || 1][3 + i] === 1) {
         spelStatus = GAMEOVER;
       }
-      if (checkPauze()) {
-        spelStatus = PAUZE;
-      }
     }
-    if (spelStatus === GAMEOVER) {
+  };
+  // teken game-over scherm
 
 
-      // dit gaat kijken of je hebt verloren
-      for (var i = 0; i < 4; i++) {
-        if (bord[0 || 1][3 + i] === 1) {
-          spelStatus = GAMEOVER;
-        }
-      }
-    };
-    // teken game-over scherm
-
-
-  }
 }
+
 
 //Straight
 if (positieBlok[3] === 0) {
@@ -246,35 +246,33 @@ function keyPressed() {
     case 69:
       rotateBlok();
       break;
+      
+    // blokken naar beneden
+    case 40:
+      positieBlok[0]++;
+      checkBotsing();
+      break;
 
+    // blokken naar rechts
+    case 39:
+      if (positieBlok[1] - rVergoeding2 < 7) {
+        positieBlok[1]++;
+      }
+      break;
 
-// blokken naar beneden
-case 40:
-positieBlok[0]++;
-checkBotsing();
-break;
+    // blokken naar links
+    case 37:
+      if (positieBlok[1] - rVergoeding1 > 0) {
+        positieBlok[1]--;
+      }
+      break;
 
-// blokken naar rechts
-case 39:
-if (positieBlok[1] - rVergoeding2 < 7) {
-  positieBlok[1]++;
-}
-break;
-
-// blokken naar links
-case 37: (positieBlok[1]) - rVergoeding1 > 0) {
-  positieBlok[1]--;
-}
-if
-
-break;
-
-// blokken vallen in 1x naar beneden 
-case 32:
-do {
-  positieBlok[0]++;
-  checkBotsing();
-} while (positieBlok[0] != 0)
-break;
+    // blokken vallen in 1x naar beneden 
+    case 32:
+      do {
+        positieBlok[0]++;
+        checkBotsing();
+      } while (positieBlok[0] != 0)
+      break;
   }
 }
