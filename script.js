@@ -68,7 +68,6 @@ var beweegAlles = function() {
 
 /**
  * Checkt botsingen
- * Updatet globale variabelen punten en health
  */
 var verwerkBotsing = function() {
 };
@@ -108,7 +107,6 @@ var tekenAlles = function() {
  */
 var checkPauze = function() {
   // als pauze knop ingelikt dan return true
-
   if (mouseIsPressed && !mouseIsPressedLastTime &&
     mouseX > knopX && mouseX < knopX + knopW) {
     console.log("pauze");
@@ -125,6 +123,13 @@ var checkPauze = function() {
  * anders return false
  */
 var checkGameOver = function() {
+  // dit gaat kijken of je hebt verloren
+  for (var i = 0; i < 4; i++) {
+    if (bord[0 || 1][3 + i] === 1) {
+      return true
+    }
+  }
+  return false;
 }
 /* ********************************************* */
 /* setup() en draw() functies / hoofdprogramma   */
@@ -147,9 +152,6 @@ function preload() {
 function setup() {
   // Maak een canvas (rechthoek) waarin je je speelveld kunt tekenen
   createCanvas(1280, 720);
-
-  spelStatus = HOME;
-
 }
 
 /**
@@ -164,6 +166,8 @@ function draw() {
     }
     // doe niks, behalve checken of hij van pauze af moet met mouseIsPressed
   }
+
+
   if (spelStatus === SPELEN) {
     beweegAlles();
     verwerkBotsing();
@@ -175,28 +179,24 @@ function draw() {
       spelStatus = PAUZE;
     }
   }
+
+
   if (spelStatus === GAMEOVER) {
 
-
-    // dit gaat kijken of je hebt verloren
-    for (var i = 0; i < 4; i++) {
-      if (bord[0 || 1][3 + i] === 1) {
-        spelStatus = GAMEOVER;
-      }
+    // teken game-over scherm
+    console.log("game over");
+    textSize(50);
+    fill("white");
+    text("GAME OVER", 500, 400);
+    text("Druk enter om opnieuw te beginnen")
+    if (keyIsDown(32)) { //spatie
+      spelStatus = SPELEN;
     }
-  };
-  // teken game-over scherm
-  console.log("game over");
-  textSize(50);
-  fill("white");
-  text("GAME OVER", 500, 400);
-  if (keyIsDown(32)) {
-    spelStatus = SPELEN;
   }
 }
 
 
-//Straight
+// Straight
 if (positieBlok[3] === 0) {
 
   //checkt welke rotaties je blokken mogelijk kunnen volgen
@@ -221,7 +221,7 @@ if (positieBlok[3] === 0) {
   }
 }
 
-//  blokken
+// blokken
 else if (positieBlok[3] != 0 || 1) {
   switch (positieBlok[2]) {
     case 1:
@@ -251,7 +251,7 @@ function keyPressed() {
     case 69:
       rotateBlok();
       break;
-      
+
     // blokken naar beneden
     case 40:
       positieBlok[0]++;
@@ -270,14 +270,6 @@ function keyPressed() {
       if (positieBlok[1] - rVergoeding1 > 0) {
         positieBlok[1]--;
       }
-      break;
-
-    // blokken vallen in 1x naar beneden 
-    case 32:
-      do {
-        positieBlok[0]++;
-        checkBotsing();
-      } while (positieBlok[0] != 0)
       break;
   }
 }
