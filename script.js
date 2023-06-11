@@ -48,7 +48,7 @@ var bord = Array.from(Array(20), () => new Array(10));
 const Tetromino = [  // 7 soorten Tetromino stenen
   [[1, 1, 0, 0], [1, 1, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0]], // Vierkant tetromino
   [[1, 1, 1, 1], [0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0]], // Rechte tetromino
-  [[1, 1, 0, 0], [0, 1, 1, 0], [0, 0, 0, 0], [0, 0, 0, 0]]  // Z-tetromino
+  [[1, 1, 0, 0], [0, 1, 1, 0], [0, 0, 0, 0], [0, 0, 0, 0]],  // Z-tetromino
   [[0, 1, 1, 0], [1, 1, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0]], // S-tetromino
   [[0, 0, 1, 0], [1, 1, 1, 0], [0, 0, 0, 0], [0, 0, 0, 0]], // L-tetromino
   [[1, 0, 0, 0], [1, 1, 1, 0], [0, 0, 0, 0], [0, 0, 0, 0]], // J-tetromino
@@ -60,216 +60,308 @@ const Tetromino = [  // 7 soorten Tetromino stenen
 /* ********************************************* */
 
 /**
- * Update globale variabelen met posities van speler, vijanden en kogels
+ * Genereer een nieuwe Tetromino-blok
  */
-var beweegAlles = function() {
-
+var generateTetromino = function() {
+  var type = Math.floor(Math.random() * Tetromino.length);
+  var rotation = Math.floor(Math.random() * 4);
+  var x = 3; // Startpositie van het blok op het bord
+  var y = 0;
+  
+  positieBlok[0] = x;
+  positieBlok[1] = y;
+  positieBlok[2] = rotation;
+  positieBlok[3] = type;
 };
 
 /**
- * Checkt botsingen
+ * Tekent het Tetris-bord en de Tetromino-blokken
  */
-var verwerkBotsing = function() {
+var tekenBord = function() {
+  for (var i = 0; i < 20; i++) {
+    for (var j = 0; j < 10; j++) {
+      if (bord[i][j] === 1) {
+        // Teken een gevuld blokje
+        fill("blue");
+        rect(j * 30, i * 30, 30, 30);
+      } else {
+        // Teken een leeg blokje
+        fill("#282f70");
+        rect(j * 30, i * 30, 30, 30);
+      }
+    }
+  }
+
+  var type = positieBlok[3];
+  var rotation = positieBlok[2];
+  var x = positieBlok[1];
+  var y = positieBlok[0];
+
+  // Teken het huidige Tetromino-blok
+  for (var i = 0; i < 4; i++) {
+    for (var j = 0; j < 4; j++) {
+      if (Tetromino[type][rotation][i][j] === 1) {
+        fill("red");
+        rect((j + x) * 30, (i + y) * 30, 30, 30);
+      }
+    }
+  }
 };
 
 /**
- * Tekent spelscherm
+ * Controleer of het Tetromino-blok kan bewegen
+ * @param {number} dx - Verandering in x-positie
+ * @param {number} dy - Verandering in y-positie
+ * @param {number} rotation - Rotatie van het blok
+ * @returns {boolean} - True als het blok kan bewegen, anders False
  */
-var tekenAlles = function() {
-  // Kleur de achtergrond blauw, zodat je het kunt zien
-  background("#282f70")
+var kanBlokBewegen = function(dx, dy, rotation) {
+  var type = positieBlok[3];
+  var x = positieBlok[1] + dx;
+  var y = positieBlok[0] + dy;
 
-  //logo
-  image(img, 500, 0, 250, 200);
-
-  // teken score
-  fill("#282f70");
-  rect(1020, 40, 210, 180);
-  textSize(40);
-  fill(133, 121, 107);
-  text("𝗬𝗼𝘂𝗿 𝗦𝗰𝗼𝗿𝗲", 1025, 90);
-  textSize(20);
-
-  fill(133, 121, 107);
-  var score = 0;
-  text(String(score), 1120, 150);
-
-  // teken knop
-  fill("red");
-  rect(knopX, knopY, knopW, knopH);
-  fill("white");
-  text("𝐒𝐭𝐚𝐫𝐭 / 𝐏𝐚𝐮𝐳𝐞", 1070, 270);
-  textSize(20);
-};
-/**
- * return true als het gameover is
- * anders return false
- */
-var checkPauze = function() {
-  // als pauze knop ingelikt dan return true
-  if (mouseIsPressed && !mouseIsPressedLastTime &&
-    mouseX > knopX && mouseX < knopX + knopW) {
-    console.log("pauze");
-    mouseIsPressedLastTime = mouseIsPressed;
-    return true;
-  } else {
-    mouseIsPressedLastTime = mouseIsPressed;
+  // Controleer of het blok binnen het bord blijft
+  if (x < 0 || x >= 10 || y >= 20) {
     return false;
   }
+
+  // Controleer op botsingen met andere blokken op het bord
+  for (var i = 0; i < 4; i++) {
+    for (var j = 0; j < 4; j++) {
+      if (Tetromino[type][rotation][i][j] === 1) {
+        var nx = x + j;
+        var ny = y + i;
+
+        if (ny >= 0 && (ny >= 20 || bord[ny][nx] === 1)) {
+          return false;
+        }
+      }
+    }
+  }
+
+  return true;
 };
 
 /**
- * return true als het gameover is
- * anders return false
+ * Draai het Tetromino-blok met de klok mee
  */
-var checkGameOver = function() {
-  // dit gaat kijken of je hebt verloren
-  for (var i = 0; i < 4; i++) {
-    if (bord[0 || 1][3 + i] === 1) {
-      return true
-    }
+var draaiBlok = function() {
+  var type = positieBlok[3];
+  var rotation = positieBlok[2];
+  var newRotation = (rotation + 1) % 4;
+
+  if (kanBlokBewegen(0, 0, newRotation)) {
+    positieBlok[2] = newRotation;
   }
-  return false;
-}
-/* ********************************************* */
-/* setup() en draw() functies / hoofdprogramma   */
-/* ********************************************* */
-/**
- * preload
- * deze functie wordt één keer uitgevoerd voor setup
- * de p5 library, zodra het spel geladen is in de browser
- * we laden hier de plaatjes
- */
-function preload() {
-  img = loadImage('afbeeldingen/tetris.png');
-}
+};
 
 /**
- * setup
- * de code in deze functie wordt één keer uitgevoerd door
- * de p5 library, zodra het spel geladen is in de browser
+ * Verplaats het Tetromino-blok naar links
+ */
+var verplaatsLinks = function() {
+  if (kanBlokBewegen(-1, 0, positieBlok[2])) {
+    positieBlok[1] -= 1;
+  }
+};
+
+/**
+ * Verplaats het Tetromino-blok naar rechts
+ */
+var verplaatsRechts = function() {
+  if (kanBlokBewegen(1, 0, positieBlok[2])) {
+    positieBlok[1] += 1;
+  }
+};
+
+/**
+ * Verplaats het Tetromino-blok naar beneden
+ */
+var verplaatsBeneden = function() {
+  if (kanBlokBewegen(0, 1, positieBlok[2])) {
+    positieBlok[0] += 1;
+  } else {
+    verwerkBlok();
+  }
+};
+
+/**
+ * Verwerk het Tetromino-blok nadat het niet verder kan bewegen
+ */
+var verwerkBlok = function() {
+  var type = positieBlok[3];
+  var rotation = positieBlok[2];
+  var x = positieBlok[1];
+  var y = positieBlok[0];
+
+  // Voeg het Tetromino-blok toe aan het bord
+  for (var i = 0; i < 4; i++) {
+    for (var j = 0; j < 4; j++) {
+      if (Tetromino[type][rotation][i][j] === 1) {
+        var nx = x + j;
+        var ny = y + i;
+
+        if (ny >= 0) {
+          bord[ny][nx] = 1;
+        }
+      }
+    }
+  }
+
+  // Controleer of er volle rijen zijn
+  for (var i = 0; i < 20; i++) {
+    var volleRij = true;
+
+    for (var j = 0; j < 10; j++) {
+      if (bord[i][j] === 0) {
+        volleRij = false;
+        break;
+      }
+    }
+
+    if (volleRij) {
+      // Verwijder de volle rij en verplaats de rijen erboven omlaag
+      for (var k = i; k > 0; k--) {
+        for (var j = 0; j < 10; j++) {
+          bord[k][j] = bord[k - 1][j];
+        }
+      }
+
+      // Maak de bovenste rij leeg
+      for (var j = 0; j < 10; j++) {
+        bord[0][j] = 0;
+      }
+
+      // Verhoog de score
+      score += 10;
+    }
+  }
+
+  // Genereer een nieuw Tetromino-blok
+  generateTetromino();
+
+  // Controleer of het spel voorbij is
+  if (!kanBlokBewegen(0, 0, positieBlok[2])) {
+    spelStatus = GAMEOVER;
+  }
+};
+
+/**
+ * Tekent het Tetris-spel
+ */
+var tekenSpel = function() {
+  // Teken het bord en het Tetromino-blok
+  tekenBord();
+
+  // Teken de score
+  fill(255);
+  textSize(20);
+  text("Score: " + score, 420, 50);
+};
+
+/**
+ * Reset het spel
+ */
+var resetSpel = function() {
+  // Initialiseer het bord
+  bord = Array.from(Array(20), () => new Array(10));
+
+  // Initialiseer de score
+  score = 0;
+
+  // Genereer het eerste Tetromino-blok
+  generateTetromino();
+
+  // Zet de spelstatus op SPELEN
+  spelStatus = SPELEN;
+};
+
+/* ********************************************* */
+/* p5 functies die je gebruikt in je game         */
+/* ********************************************* */
+
+/**
+ * Setup functie wordt één keer uitgevoerd door p5 bij het starten van de game
  */
 function setup() {
-  // Maak een canvas (rechthoek) waarin je je speelveld kunt tekenen
-  createCanvas(1280, 720);
+  createCanvas(1200, 600);
+  frameRate(30);
+  generateTetromino();
 }
 
 /**
- * draw
- * de code in deze functie wordt 50 keer per seconde
- * uitgevoerd door de p5 library, nadat de setup functie klaar is
+ * draw functie wordt continu uitgevoerd door p5
  */
 function draw() {
-  if (spelStatus === PAUZE) {
-    if (checkPauze()) {
-      spelStatus = SPELEN;
-    }
-    // doe niks, behalve checken of hij van pauze af moet met mouseIsPressed
-  }
+  background(0);
 
-
+  // Controleer de huidige spelstatus
   if (spelStatus === SPELEN) {
-    beweegAlles();
-    verwerkBotsing();
-    tekenAlles();
-    if (checkGameOver()) {
-      spelStatus = GAMEOVER;
-    }
-    if (checkPauze()) {
-      spelStatus = PAUZE;
-    }
+    tekenSpel();
+  } else if (spelStatus === GAMEOVER) {
+    // Teken het einde van het spel
+    fill(255);
+    textSize(40);
+    text("Game Over", 500, 300);
+    textSize(20);
+    text("Druk op de spatiebalk om opnieuw te spelen", 440, 350);
+  } else if (spelStatus === PAUZE) {
+    // Teken de pauze-tekst
+    fill(255);
+    textSize(40);
+    text("Pauze", 540, 300);
   }
 
-
-  if (spelStatus === GAMEOVER) {
-
-    // teken game-over scherm
-    console.log("game over");
-    textSize(50);
-    fill("white");
-    text("GAME OVER", 500, 400);
-    text("Druk enter om opnieuw te beginnen")
-    if (keyIsDown(32)) { //spatie
-      spelStatus = SPELEN;
+  // Controleer of de muis is ingedrukt
+  if (mouseIsPressed) {
+    // Controleer of de muis net is ingedrukt
+    if (!mouseIsPressedLastTime) {
+      // Controleer of de muis in het gebied van de start + pauze knop is
+      if (
+        mouseX >= knopX &&
+        mouseX <= knopX + knopW &&
+        mouseY >= knopY &&
+        mouseY <= knopY + knopH
+      ) {
+        // Pauzeer of hervat het spel
+        if (spelStatus === SPELEN) {
+          spelStatus = PAUZE;
+        } else if (spelStatus === PAUZE) {
+          spelStatus = SPELEN;
+        } else if (spelStatus === GAMEOVER) {
+          // Start het spel opnieuw
+          resetSpel();
+        }
+      }
     }
+
+    // Houd de staat van de muis ingedrukt bij
+    mouseIsPressedLastTime = true;
+  } else {
+    // Houd de staat van de muis niet ingedrukt bij
+    mouseIsPressedLastTime = false;
   }
 }
 
-
-// Straight
-if (positieBlok[3] === 0) {
-
-  //checkt welke rotaties je blokken mogelijk kunnen volgen
-  switch (positieBlok[2]) {
-    // recht schuin naar de grond (zelfde bij case 1)
-    case 1:
-      positieBlok[4] = positieBlok[0];
-      positieBlok[5] = positieBlok[1] + 3;
-      break;
-    // recht naar de grond (zelfde bij case 4)
-    case 2:
-      positieBlok[4] = positieBlok[0] + 3;
-      positieBlok[5] = positieBlok[1];
-      break;
-    case 3:
-      positieBlok[4] = positieBlok[0];
-      positieBlok[5] = positieBlok[1] + 3;
-      break;
-    case 4:
-      positieBlok[4] = positieBlok[0] + 3;
-      positieBlok[5] = positieBlok[1];
-  }
-}
-
-// blokken
-else if (positieBlok[3] != 0 || 1) {
-  switch (positieBlok[2]) {
-    case 1:
-      positieBlok[4] = positieBlok[0] + 1;
-      positieBlok[5] = positieBlok[1] + 2;
-      break;
-    case 2:
-      positieBlok[4] = positieBlok[0] + 2;
-      positieBlok[5] = positieBlok[1] + 1;
-      break;
-    case 3:
-      positieBlok[4] = positieBlok[0] + 1;
-      positieBlok[5] = positieBlok[1] + 2;
-      break;
-    case 4:
-      positieBlok[4] = positieBlok[0] + 2;
-      positieBlok[5] = positieBlok[1] + 1;
-      break;
-  }
-}
-
-
-/** Controls */
+/**
+ * KeyPressed functie wordt uitgevoerd wanneer een toets wordt ingedrukt
+ */
 function keyPressed() {
-  switch (keyCode) {
-    //rotate de blokken
-    case 69:
-      rotateBlok();
-      break;
-
-    // blokken naar beneden
-    case 40:
-      positieBlok[0]++;
-      checkBotsing();
-      break;
-
-    // blokken naar rechts
-    case 39:
-      if (positieBlok[1] - rVergoeding2 < 7) {
-        positieBlok[1]++;
-      }
-      break;
-
-    // blokken naar links
-    case 37:
-      if (positieBlok[1] - rVergoeding1 > 0) {
-        positieBlok[1]--;
-      }
-      break;
+  if (spelStatus === SPELEN) {
+    // Verplaats het blok op basis van de toets
+    if (keyCode === LEFT_ARROW) {
+      verplaatsLinks();
+    } else if (keyCode === RIGHT_ARROW) {
+      verplaatsRechts();
+    } else if (keyCode === DOWN_ARROW) {
+      verplaatsBeneden();
+    } else if (keyCode === UP_ARROW) {
+      draaiBlok();
+    }
+  } else if (spelStatus === GAMEOVER) {
+    // Reset het spel bij het indrukken van de spatiebalk
+    if (keyCode === 32) {
+      resetSpel();
+    }
   }
 }
+ 
